@@ -13,12 +13,14 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout repository
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           persist-credentials: false
-      - uses: anomalyco/opencode/github@latest
+      - name: Run OpenCode
+        uses: anomalyco/opencode/github@latest
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
-          model: anthropic/claude-sonnet-4-5
+          model: opencode/deepseek-v4.1-flash-free
