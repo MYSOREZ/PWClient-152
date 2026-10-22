@@ -1,0 +1,72 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.pwx.client'
+    compileSdk 36
+    ndkVersion '30.0.16248370'
+
+    defaultConfig {
+        applicationId 'com.pwx.client'
+        minSdk 28
+        targetSdk 36
+        versionCode 1
+        versionName '0.1.0'
+
+        ndk {
+            abiFilters 'arm64-v8a'
+        }
+
+        externalNativeBuild {
+            cmake {
+                arguments '-DANDROID_STL=c++_static'
+                cppFlags '-std=c++20'
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            jniDebuggable true
+        }
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+            version '3.22.1'
+        }
+    }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+}
+
+// Every APK carries its build stamp so a device log can be matched to a binary.
+def buildStamp = new Date().format("yyyyMMdd-HHmmss")
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        variant.buildConfigFields.put("BUILD_STAMP", new com.android.build.api.variant.BuildConfigField(
+                "String", "\"${buildStamp}\"", "Build stamp"))
+    }
+}
+
+dependencies {
+}
