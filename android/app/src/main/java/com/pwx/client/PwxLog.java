@@ -60,8 +60,27 @@ public final class PwxLog {
         write("I", "PwxLog", "all-files-access: " + hasPublicAccess());
     }
 
-    public static synchronized String path() {
-        return logFile == null ? "(none)" : logFile.getAbsolutePath();
+    /**
+     * Crashes must land in the log file: the tester reports "it died", and the file has to
+     * explain who died and where. The previous handler still runs, so logcat keeps its FATAL.
+     */
+    public static void installCrashHandler() {
+        final Thread.UncaughtExceptionHandler previous = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler((thread, error) -> {
+            write("E", "CRASH", "uncaught in thread " + thread.getName() + ": " + error);
+            synchronized (PwxLog.class) {
+                if (writer != null) {
+                    error.printStackTrace(writer);
+                    writer.flush();
+                }
+            }
+            if (previous != null) {
+                previous.uncaughtException(thread, error);
+            }
+        });
+    }
+
+    public static synchronized String path() {        return logFile == null ? "(none)" : logFile.getAbsolutePath();
     }
 
     public static synchronized String dirPath() {

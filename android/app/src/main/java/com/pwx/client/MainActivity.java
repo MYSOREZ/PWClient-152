@@ -36,13 +36,26 @@ public class MainActivity extends Activity {
         hideSystemUi();
 
         PwxLog.init(this, BuildConfig.BUILD_STAMP);
-        PwxLog.i("Main", "native: " + NativeBridge.buildInfo());
+        PwxLog.installCrashHandler();
+        try {
+            PwxLog.i("Main", "native: " + NativeBridge.buildInfo());
+        } catch (Throwable t) {
+            PwxLog.e("Main", "native library failed to load", t);
+        }
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
         PwxLog.i("Main", "screen: " + dm.widthPixels + "x" + dm.heightPixels
                 + " density=" + dm.density + " dpi=" + dm.densityDpi);
 
         ensurePublicLogAccess();
+
+        // Debug-only self-test: proves the crash handler actually reaches the log file.
+        // adb shell touch /sdcard/Download/PWX/crash-test, then relaunch.
+        if (BuildConfig.DEBUG && new java.io.File(
+                Environment.getExternalStorageDirectory(), "Download/PWX/crash-test").exists()) {
+            PwxLog.i("Main", "crash self-test triggered by Download/PWX/crash-test");
+            throw new RuntimeException("PWX crash self-test");
+        }
 
         FrameLayout root = new FrameLayout(this);
 

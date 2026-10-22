@@ -1,6 +1,10 @@
 package com.pwx.client;
 
 public final class NativeBridge {
+    static {
+        System.loadLibrary("pwx");
+    }
+
     private NativeBridge() {
     }
 
