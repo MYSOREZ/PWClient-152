@@ -18,3 +18,5 @@
 /tools/gradle/
 /logs/
 *.keystore
+/android/app/.cxx/
+/android/.cxx/
