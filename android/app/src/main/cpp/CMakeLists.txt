@@ -29,6 +29,7 @@ FetchContent_MakeAvailable(SDL)
 
 # SDL's Android glue loads "main" and calls SDL_main from it.
 add_library(main SHARED
+    gles/d3d9gles.cpp
     pwx_jni.cpp
     pwx_log.cpp
     pwx_gl.cpp

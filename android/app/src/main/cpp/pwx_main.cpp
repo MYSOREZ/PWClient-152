@@ -116,7 +116,7 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        pwx::GlRender(static_cast<float>(SDL_GetTicks() - start) / 1000.0f);
+        pwx::GlRender(static_cast<float>(SDL_GetTicks() - start) / 1000.0f, width, height);
         SDL_GL_SwapWindow(window);
         frames++;
 
@@ -127,6 +127,9 @@ int main(int argc, char* argv[]) {
             lastLog = now;
         }
     }
+
+    // Release GL objects while the context is still current.
+    pwx::GlShutdown();
 
     SDL_GL_DestroyContext(context);
     SDL_DestroyWindow(window);

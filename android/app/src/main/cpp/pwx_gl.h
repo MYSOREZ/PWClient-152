@@ -2,10 +2,10 @@
 
 namespace pwx {
 
-// Minimal GLES 3.0 pipeline: one shader program, one VBO, one triangle.
-// It exists to prove the whole chain (context -> shader compile -> draw -> swap) on device
-// before the D3D9 state machine is ported.
+// Demo scene driven through the d3d9gles device: it calls the same D3D-shaped API that
+// Angelica3D will call once the engine is wired in.
 void GlInit();
-void GlRender(float timeSeconds);
+void GlRender(float timeSeconds, int width, int height);
+void GlShutdown();
 
 }  // namespace pwx
