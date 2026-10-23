@@ -20,3 +20,4 @@
 *.keystore
 /android/app/.cxx/
 /android/.cxx/
+/tools/sdl3/

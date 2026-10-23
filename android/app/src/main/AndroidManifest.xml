@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:glEsVersion="0x00030000" android:required="true" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
 
     <!-- Needed only so the game can write its log into Download/PWX.
          Without it the log falls back to the app-specific external dir. -->
@@ -11,14 +12,18 @@
 
     <application
         android:allowBackup="false"
-        android:extractNativeLibs="true"
+        android:enableOnBackInvokedCallback="false"
+        android:hardwareAccelerated="true"
         android:label="PWX"
-        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        android:theme="@style/AppTheme">
 
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|uiMode"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="layoutDirection|locale|grammaticalGender|fontScale|fontWeightAdjustment|orientation|uiMode|screenLayout|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:exported="true"
+            android:launchMode="singleInstance"
+            android:preferMinimalPostProcessing="true"
             android:screenOrientation="sensorLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -49,6 +49,15 @@ $env:PATH = "$sdk\platform-tools;$sdk\cmake\3.22.1\bin;$jdk\bin;$env:PATH"
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 Write-Host "Building $variant (stamp $stamp)..."
 
+$sdlTag = 'release-3.4.18'
+$sdlDir = Join-Path $repo 'tools\sdl3'
+if (-not (Test-Path (Join-Path $sdlDir 'CMakeLists.txt'))) {
+    Write-Host "SDL3 $sdlTag not cached, cloning..."
+    New-Item -ItemType Directory -Force $sdlDir | Out-Null
+    git clone --depth 1 --branch $sdlTag https://github.com/libsdl-org/SDL.git $sdlDir
+    if ($LASTEXITCODE -ne 0) { throw 'SDL3 clone failed' }
+}
+
 & $gradleBat -p (Join-Path $repo 'android') $assembleTask --no-daemon --console=plain
 if ($LASTEXITCODE -ne 0) {
     throw "Gradle failed with exit code $LASTEXITCODE"
