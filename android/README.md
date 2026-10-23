@@ -5,9 +5,12 @@ the source of the SDK/JDK that these scripts point at.
 
 ## Status
 
-Bring-up shell: native library + GLES 3.0 surface + file logging.
-The Perfect World client itself is not integrated yet — the renderer is a demo clear loop
-that proves the toolchain, the install path and the log pipeline on a real device.
+SDL3 + GLES 3.0 bring-up shell: `SDLActivity` owns the window/context/input, `libmain.so`
+runs the render loop, draws a rotating triangle through a real GLES 3.0 shader pipeline,
+and writes both Java and native lines into one log file.
+
+Verified on the target device (Poco F8 Pro / 2510DPC44G, Android 16, Adreno 830):
+APK installs and the triangle renders. The engine is not integrated yet.
 
 ## Toolchain (this machine)
 
